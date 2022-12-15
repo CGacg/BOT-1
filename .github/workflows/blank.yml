@@ -1,0 +1,35 @@
+import talib
+
+def moving_average_cross(close, type_ma1, length_ma1, type_ma2, length_ma2):
+    # Calculate moving averages
+    if type_ma1 == 'SMA':
+        ma1 = talib.SMA(close, timeperiod=length_ma1)
+    elif type_ma1 == 'EMA':
+        ma1 = talib.EMA(close, timeperiod=length_ma1)
+    elif type_ma1 == 'RMA':
+        ma1 = talib.RMA(close, timeperiod=length_ma1)
+        
+    if type_ma2 == 'SMA':
+        ma2 = talib.SMA(close, timeperiod=length_ma2)
+    elif type_ma2 == 'EMA':
+        ma2 = talib.EMA(close, timeperiod=length_ma2)
+    elif type_ma2 == 'RMA':
+        ma2 = talib.RMA(close, timeperiod=length_ma2)
+        
+    # Calculate buy and sell signals
+    buy = (ma1[-1] > ma2[-1]) and (ma1[-2] < ma2[-2])
+    sell = (ma1[-1] < ma2[-1]) and (ma1[-2] > ma2[-2])
+    
+    return buy, sell
+    
+
+# Test the function with some sample data
+close = [100, 101, 102, 101, 100, 99, 98, 97, 96, 95]
+type_ma1 = 'SMA'
+length_ma1 = 2
+type_ma2 = 'EMA'
+length_ma2 = 3
+buy, sell = moving_average_cross(close, type_ma1, length_ma1, type_ma2, length_ma2)
+
+print(buy)  # False
+print(sell)  # True
